@@ -18,7 +18,7 @@ Go's package management expects that all go source files and packages will exist
 - Isolates dependencies from other projects.
 - Does not interfere with any `go` command functionality.
 - Written in Go, installable with `go get`.
-- Support POSIX compliant shells like Bash and ZSH, but now also Fish :)
+- Supports POSIX compliant shells like Bash and ZSH, but now also Fish :)
 
 ## Quick start
 
