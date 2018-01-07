@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/user"
+	"path"
 	"path/filepath"
 	"text/template"
 )
@@ -180,6 +181,7 @@ func (task *InitTask) Run() error {
 
 // writeScript writes the goenv activate script.
 func (task *InitTask) writeScript() error {
+	var isFish = path.Base(os.Getenv("SHELL")) == "fish"
 
 	err := os.MkdirAll(filepath.Dir(task.ScriptPath), os.ModeDir|0755)
 
@@ -188,7 +190,11 @@ func (task *InitTask) writeScript() error {
 	}
 
 	scriptTemplate := template.New("test")
-	scriptTemplate, err = scriptTemplate.Parse(script)
+	if isFish {
+		scriptTemplate, err = scriptTemplate.Parse(scriptFish)
+	} else {
+		scriptTemplate, err = scriptTemplate.Parse(script)
+	}
 
 	if err != nil {
 		return err
