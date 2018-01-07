@@ -42,6 +42,34 @@ deactivate() {
 }
 `
 
+const scriptFish = `
+# This file must be used with "source activate" or ". activate"
+
+if test -n "$GOENV"
+	deactivate
+end
+
+set -x GOENV {{.ProjectName}}
+set -x GOENV_OLDGOPATH $GOPATH
+set -x GOENV_OLDPATH $PATH
+
+set -x GOPATH {{.GoPath}}
+set -x PATH $GOPATH/bin $PATH
+
+mkdir -p $(dirname $GOPATH/src/{{.ImportPath}})
+rm -f $GOPATH/src/{{.ImportPath}}
+ln -s {{.ProjectPath}} $GOPATH/src/{{.ImportPath}}
+
+function deactivate
+	set -x GOPATH $GOENV_OLDGOPATH
+	set -x PATH $GOENV_OLDPATH
+
+	set -e GOENV GOENV_OLDPS1 GOENV_OLDPATH GOENV_OLDGOPATH
+	functions --erase deactivate
+end
+funcsave deactivate
+`
+
 var initCommand = Command{
 	Name:  "init",
 	Short: "initialize a goenv",
