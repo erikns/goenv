@@ -57,7 +57,7 @@ set -x GOENV_OLDPATH $PATH
 set -x GOPATH {{.GoPath}}
 set -x PATH $GOPATH/bin $PATH
 
-mkdir -p $(dirname $GOPATH/src/{{.ImportPath}})
+mkdir -p (dirname $GOPATH/src/{{.ImportPath}})
 rm -f $GOPATH/src/{{.ImportPath}}
 ln -s {{.ProjectPath}} $GOPATH/src/{{.ImportPath}}
 
@@ -65,10 +65,12 @@ function deactivate
 	set -x GOPATH $GOENV_OLDGOPATH
 	set -x PATH $GOENV_OLDPATH
 
-	set -e GOENV GOENV_OLDPS1 GOENV_OLDPATH GOENV_OLDGOPATH
+	set -e GOENV
+	set -e GOENV_OLDPS1
+	set -e GOENV_OLDPATH
+	set -e GOENV_OLDGOPATH
 	functions --erase deactivate
 end
-funcsave deactivate
 `
 
 var initCommand = Command{
